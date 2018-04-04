@@ -144,19 +144,24 @@ class ActivityLogItem extends Component {
 	 *
 	 * @returns {Object} Get button to fix credentials.
 	 */
-	renderFixCredsAction = () => (
-		<Button
-			className="activity-log-item__quick-action"
-			primary
-			compact
-			href={ `/start/rewind-setup/?siteId=${ this.props.siteId }&siteSlug=${
-				this.props.siteSlug
-			}` }
-			onClick={ this.props.trackFixCreds }
-		>
-			{ this.props.translate( 'Fix credentials' ) }
-		</Button>
-	);
+	renderFixCredsAction = () => {
+		const { rewindState, siteId, siteSlug, trackFixCreds, translate } = this.props;
+		return (
+			<Button
+				className="activity-log-item__fix-creds"
+				primary
+				compact
+				href={
+					rewindState.canAutoconfigure
+						? `/start/rewind-auto-config/?blogid=${ siteId }&siteSlug=${ siteSlug }`
+						: `/start/rewind-setup/?siteId=${ siteId }&siteSlug=${ siteSlug }`
+				}
+				onClick={ trackFixCreds }
+			>
+				{ translate( 'Fix credentials' ) }
+			</Button>
+		);
+	};
 
 	render() {
 		const {

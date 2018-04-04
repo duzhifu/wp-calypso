@@ -14,7 +14,12 @@ import { isEmpty } from 'lodash';
 import ActivityLogItem from '../activity-log-item';
 import FoldableCard from 'components/foldable-card';
 import { recordTracksEvent } from 'state/analytics/actions';
-import { getActivityLog, getRequestedRewind, getRewindEvents } from 'state/selectors';
+import {
+	getActivityLog,
+	getRequestedRewind,
+	getRewindEvents,
+	getRewindState,
+} from 'state/selectors';
 import { ms, makeIsDiscarded } from 'state/activity-log/log/is-discarded';
 
 /**
@@ -27,6 +32,10 @@ class ActivityLogDay extends Component {
 		disableRestore: false,
 		disableBackup: false,
 		isRewindActive: true,
+		rewindState: {
+			state: 'unavailable',
+			canAutoconfigure: false,
+		},
 	};
 
 	state = {
@@ -106,6 +115,7 @@ class ActivityLogDay extends Component {
 			disableRestore,
 			isDiscardedPerspective,
 			isRewindActive,
+			rewindState,
 			isToday,
 			logs,
 			requestedBackupId,
@@ -147,6 +157,7 @@ class ActivityLogDay extends Component {
 						hideRestore={ ! isRewindActive }
 						isDiscarded={ isDiscarded ? isDiscarded( log.activityTs ) : log.activityIsDiscarded }
 						siteId={ siteId }
+						rewindState={ rewindState }
 					/>
 				) ) }
 			</FoldableCard>
@@ -168,6 +179,7 @@ export default localize(
 				rewindEvents,
 				isDiscardedPerspective,
 				requestedRestoreId,
+				rewindState: getRewindState( state, siteId ),
 			};
 		},
 		( dispatch, { logs, tsEndOfSiteDay, moment } ) => ( {
