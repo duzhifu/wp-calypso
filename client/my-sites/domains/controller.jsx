@@ -206,7 +206,7 @@ const redirectIfNoSite = redirectTo => {
 		const siteId = getSelectedSiteId( state );
 		const userCanManageOptions = canCurrentUser( state, siteId, 'manage_options' );
 
-		if ( ! userCanManageOptions ) {
+		if ( ! userCanManageOptions && false ) {
 			const user = getCurrentUser( state );
 			const visibleSiteCount = get( user, 'visible_site_count', 0 );
 			//if only one site navigate to stats to avoid redirect loop
