@@ -22,6 +22,14 @@ export function createScriptElement( url ) {
 	return script;
 }
 
+export function hasScriptElement( url ) {
+	const loadedScripts = document.getElementsByTagName( 'script' );
+
+	const scriptMatchingUrl = Array.from( loadedScripts ).find( scriptTag => scriptTag.src === url );
+
+	return typeof scriptMatchingUrl !== 'undefined';
+}
+
 export function attachToHead( element ) {
 	debug( 'Attaching element to head' );
 	document.head.appendChild( element );
