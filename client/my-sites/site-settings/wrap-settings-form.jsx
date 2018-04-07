@@ -329,7 +329,7 @@ const wrapSettingsForm = getFormSettings => SettingsForm => {
 		}
 	);
 
-	return flowRight( connectComponent, localize, trackForm, protectForm )( WrappedSettingsForm );
+	return flowRight( trackForm, protectForm, connectComponent, localize )( WrappedSettingsForm );
 };
 
 export default wrapSettingsForm;
