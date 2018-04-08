@@ -444,7 +444,10 @@ $plan-features-sidebar-width: 272px;
 	-webkit-overflow-scrolling: touch;
 	height: 100%;
 	padding: 20px 0 10px;
-    transform: translateY(-20px);
+	transform: translateY(-20px);
+	@include breakpoint( '>660px' ) {
+		overflow-y: auto;
+	}
 }
 
 .plan-features--signup {
@@ -648,12 +651,16 @@ $plan-features-sidebar-width: 272px;
  * A/B test for horizontal vs vertical scroll
  */
 .has-mobile-table.plan-features--signup {
-	
+
 	@include breakpoint( "<660px" ) {
-	
+
 		.signup__steps &,
 		.jetpack-connect__plans & {
 			width: auto;
+		}
+
+		.plans-wrapper {
+			overflow-y: auto;
 		}
 
 		.plan-features__graphic {
