@@ -341,26 +341,9 @@ class ActivityLog extends Component {
 			return ( { rewindId } ) => {
 				const ts = 1000 * rewindId;
 
-				if ( null === last ) {
+				if ( null === last || moment( ts ).format( 'D' ) !== moment( last ).format( 'D' ) ) {
 					last = ts;
-					return (
-						<p key="time-period-head">
-							{ moment( ts ).format(
-								translate( 'MMMM Y', { context: 'moment.js format string to show month and year' } )
-							) }
-						</p>
-					);
-				}
-
-				if ( moment( ts ).format( 'M' ) !== moment( last ).format( 'M' ) ) {
-					last = ts;
-					return (
-						<p key={ `time-period-${ ts }` }>
-							{ moment( ts ).format(
-								translate( 'MMMM Y', { context: 'moment.js format string to show month and year' } )
-							) }
-						</p>
-					);
+					return <p key={ `time-period-${ ts }` }>{ moment( ts ).format( 'LL' ) }</p>;
 				}
 
 				return null;
