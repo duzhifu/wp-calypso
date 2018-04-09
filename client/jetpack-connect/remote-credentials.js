@@ -19,7 +19,7 @@ import FormTextInput from 'components/forms/form-text-input';
 import FormattedHeader from 'components/formatted-header';
 import FormPasswordInput from 'components/forms/form-password-input';
 import HelpButton from './help-button';
-import JetpackConnectNotices from './jetpack-connect-notices';
+import JetpackRemoteInstallNotices from './jetpack-remote-install-notices';
 import LoggedOutFormLinks from 'components/logged-out-form/links';
 import LoggedOutFormLinkItem from 'components/logged-out-form/link-item';
 import MainWrapper from './main-wrapper';
@@ -30,7 +30,6 @@ import { jetpackRemoteInstall } from 'state/jetpack-remote-install/actions';
 import { getJetpackRemoteInstallErrorCode, isJetpackRemoteInstallComplete } from 'state/selectors';
 import { getConnectingSite } from 'state/jetpack-connect/selectors';
 import { REMOTE_PATH_AUTH } from './constants';
-
 import {
 	ACTIVATION_FAILURE,
 	ACTIVATION_RESPONSE_ERROR,
@@ -158,24 +157,12 @@ export class OrgCredentialsForm extends Component {
 		return UNKNOWN_REMOTE_INSTALL_ERROR;
 	}
 
-	renderNotice() {
-		const { installError } = this.props;
-		return (
-			<div className="jetpack-connect__notice">
-				{ installError ? (
-					<JetpackConnectNotices noticeType={ this.getError( installError ) } />
-				) : null }
-			</div>
-		);
-	}
-
 	formFields() {
 		const { translate } = this.props;
 		const { isSubmitting, password, username } = this.state;
 
 		return (
 			<Fragment>
-				{ this.renderNotice() }
 				<FormLabel htmlFor="username">{ translate( 'Username' ) }</FormLabel>
 				<div className="jetpack-connect__site-address-container">
 					<Gridicon size={ 24 } icon="user" />
@@ -279,15 +266,24 @@ export class OrgCredentialsForm extends Component {
 	}
 
 	render() {
+		const { installError } = this.props;
 		return (
 			<MainWrapper>
-				{ this.renderHeadersText() }
-				<Card className="jetpack-connect__site-url-input-container">
-					<form onSubmit={ this.handleSubmit }>
-						{ this.formFields() }
-						{ this.formFooter() }
-					</form>
-				</Card>
+				{ installError ? (
+					<div className="jetpack-connect__notice">
+						<JetpackRemoteInstallNotices noticeType={ this.getError( installError ) } />
+					</div>
+				) : (
+					<div>
+						{ this.renderHeadersText() }
+						<Card className="jetpack-connect__site-url-input-container">
+							<form onSubmit={ this.handleSubmit }>
+								{ this.formFields() }
+								{ this.formFooter() }
+							</form>
+						</Card>
+					</div>
+				) }
 				{ this.footerLink() }
 			</MainWrapper>
 		);
