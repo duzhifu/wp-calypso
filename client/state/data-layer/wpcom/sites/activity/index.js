@@ -9,6 +9,7 @@ import { translate } from 'i18n-calypso';
  * Internal dependencies
  */
 import fromApi from './from-api';
+// eslint-disable-next-line no-unused-vars
 import { ACTIVITY_LOG_REQUEST, ACTIVITY_LOG_WATCH } from 'state/action-types';
 import { activityLogRequest, activityLogUpdate } from 'state/activity-log/actions';
 import { dispatchRequestEx, getData, getError } from 'state/data-layer/wpcom-http/utils';
