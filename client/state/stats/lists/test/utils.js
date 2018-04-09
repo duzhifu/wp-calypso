@@ -19,6 +19,7 @@ import {
 	buildExportArray,
 	isAutoRefreshAllowedForQuery,
 	parseStoreStatsReferrers,
+	getChartLabels,
 } from '../utils';
 
 describe( 'utils', () => {
@@ -1995,6 +1996,61 @@ describe( 'utils', () => {
 
 				expect( firstRecord.date ).to.eql( 'monday' );
 			} );
+		} );
+	} );
+
+	describe( 'getChartLabels', () => {
+		test( 'should return empty object on missing unit parameter', () => {
+			const label = getChartLabels( undefined, moment(), moment() );
+			expect( label ).to.deep.equal( {} );
+		} );
+
+		test( 'should return empty object on missing date parameter', () => {
+			const label = getChartLabels( 'day', undefined, moment() );
+			expect( label ).to.deep.equal( {} );
+		} );
+
+		test( 'should return empty object on missing localizedDate parameter', () => {
+			const label = getChartLabels( 'day', moment(), undefined );
+			expect( label ).to.deep.equal( {} );
+		} );
+
+		test( 'should return a correct property label', () => {
+			const label = getChartLabels( 'day', moment(), moment() );
+			expect( Object.keys( label )[ 0 ] ).to.equal( 'labelDay' );
+		} );
+
+		test( 'should return an "is-weekend" className for a weekend date', () => {
+			const sunday = moment( '2018-04-08' );
+			const label = getChartLabels( 'day', sunday, sunday );
+			expect( label.classNames[ 0 ] ).to.equal( 'is-weekend' );
+		} );
+
+		test( 'should not return an "is-weekend" className a weekday', () => {
+			const monday = moment( '2018-04-09' );
+			const label = getChartLabels( 'day', monday, monday );
+			expect( label.classNames ).to.be.an( 'array' ).that.is.empty;
+		} );
+
+		test( 'should return a correctly formatted date', () => {
+			const april9 = moment( '2018-04-09' );
+			const day = getChartLabels( 'day', april9, april9.locale( 'en' ) );
+			expect( day.labelDay ).to.equal( 'Apr 9' );
+
+			const week = getChartLabels( 'week', april9, april9.locale( 'en' ) );
+			expect( week.labelWeek ).to.equal( 'Apr 9' );
+
+			const month = getChartLabels( 'month', april9, april9.locale( 'en' ) );
+			expect( month.labelMonth ).to.equal( 'Apr' );
+
+			const year = getChartLabels( 'year', april9, april9.locale( 'en' ) );
+			expect( year.labelYear ).to.equal( '2018' );
+		} );
+
+		test( 'should return a correctly formatted localized date', () => {
+			const april9 = moment( '2018-04-09' );
+			const label = getChartLabels( 'day', april9, april9.locale( 'fr' ) );
+			expect( label.labelDay ).to.equal( 'avr. 9' );
 		} );
 	} );
 } );

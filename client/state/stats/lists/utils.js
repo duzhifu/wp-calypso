@@ -180,23 +180,26 @@ export function parseOrderDeltas( payload ) {
  * @param {object} localizedDate - moment object
  * @return {object}
  */
-function getChartLabels( unit = '', date, localizedDate ) {
-	if ( ! date.isValid() || ! localizedDate.isValid() ) {
-		return {};
+export function getChartLabels( unit, date, localizedDate ) {
+	const validDate = moment.isMoment( date ) && date.isValid();
+	const validLocalizedDate = moment.isMoment( localizedDate ) && localizedDate.isValid();
+
+	if ( validDate && validLocalizedDate && unit ) {
+		const dayOfWeek = date.toDate().getDay();
+		const isWeekend = 'day' === unit && ( 6 === dayOfWeek || 0 === dayOfWeek );
+		const labelName = `label${ unit.charAt( 0 ).toUpperCase() + unit.slice( 1 ) }`;
+		const formats = {
+			day: 'MMM D',
+			week: 'MMM D',
+			month: 'MMM',
+			year: 'YYYY',
+		};
+		return {
+			[ labelName ]: localizedDate.format( formats[ unit ] ),
+			classNames: isWeekend ? [ 'is-weekend' ] : [],
+		};
 	}
-	const dayOfWeek = date.toDate().getDay();
-	const isWeekend = 'day' === unit && ( 6 === dayOfWeek || 0 === dayOfWeek );
-	const labelName = `label${ unit.charAt( 0 ).toUpperCase() + unit.slice( 1 ) }`;
-	const formats = {
-		day: 'MMM D',
-		week: 'MMM D',
-		month: 'MMM',
-		year: 'YYYY',
-	};
-	return {
-		[ labelName ]: localizedDate.format( formats[ unit ] ),
-		classNames: isWeekend ? [ 'is-weekend' ] : [],
-	};
+	return {};
 }
 
 /**
