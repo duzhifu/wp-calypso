@@ -102,9 +102,9 @@ class ActivityLog extends Component {
 		// localize
 		moment: PropTypes.func.isRequired,
 		translate: PropTypes.func.isRequired,
-	state = {
 	};
 
+	state = {
 		currentPage: 1,
 	};
 
@@ -360,7 +360,7 @@ class ActivityLog extends Component {
 								translate( 'MMMM Y', { context: 'moment.js format string to show month and year' } )
 							) }
 						</p>
-		);
+					);
 				}
 
 				return null;
@@ -414,13 +414,13 @@ class ActivityLog extends Component {
 								<ActivityLogItem
 									key={ log.activityId }
 									activityId={ log.activityId }
-												disableRestore={ disableRestore }
-												disableBackup={ disableBackup }
+									disableRestore={ disableRestore }
+									disableBackup={ disableBackup }
 									hideRestore={ 'active' !== rewindState.state }
 									isDiscarded={
 										isDiscarded ? isDiscarded( log.activityTs ) : log.activityIsDiscarded
 									}
-												siteId={ siteId }
+									siteId={ siteId }
 								/>
 							</Fragment>
 						) ) }
@@ -430,7 +430,7 @@ class ActivityLog extends Component {
 							pageClick={ this.changePage }
 							perPage={ PAGE_SIZE }
 							total={ logs.length }
-											/>
+						/>
 					</section>
 				) }
 			</div>
